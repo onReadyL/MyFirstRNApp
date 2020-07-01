@@ -27,26 +27,45 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-function HomeScreen(props) {
-  const {navigation, route} = props;
-  const routePush = routeName => {
-    Alert.alert(routeName);
-    navigation.push(routeName);
-  };
+function HomeScreen({ navigation, route }) {
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Button onPress={() => routePush('Details')} title="Go to Detailes" />
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button
+        onPress={() => navigation.navigate('Details')}
+        title="Go to Detailes"
+      />
+      <Button
+        onPress={() => navigation.navigate('Page1')}
+        title="Go to Page1"
+      />
     </View>
   );
 }
 
-const DetailsScreen = React.memo(props => {
-  const onPress = message => {
-    Alert.alert(message);
-  };
+function Page1({ navigation, route }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button onPress={() => navigation.goBack()} title="goBack" />
+      <Button onPress={() => navigation.popToTop()} title="Go to popTop" />
+    </View>
+  );
+}
+
+function Page2({ navigation, route }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.btnWrapper}>
+        <Button onPress={() => navigation.goBack()} title="goBack" />
+        <Button onPress={() => navigation.popToTop()} title="Go to popTop" />
+      </View>
+    </View>
+  );
+}
+
+const DetailsScreen = React.memo(({ navigation, route }) => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -71,38 +90,30 @@ const DetailsScreen = React.memo(props => {
             </View>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>编写代码</Text>
-              <TouchableHighlight
-                style={{
-                  flex: 1,
-                  backgroundColor: '#1890ff',
-                  padding: 4,
-                  textAlign: 'center',
-                }}
-                onPress={() => onPress('轻击')}
-                // onLongPress={() => onPress('长按')}
-              >
-                <Text>按钮11d</Text>
-              </TouchableHighlight>
+              <View style={styles.btnWrapper}>
+                <TouchableHighlight
+                  style={{
+                    flex: 1,
+                    backgroundColor: '#1890ff',
+                    padding: 4,
+                    textAlign: 'center',
+                  }}
+                  onPress={() => navigation.navigate('Home')}
+                >
+                  <Text>Go to Home</Text>
+                </TouchableHighlight>
+                <Button
+                  style={{
+                    flex: 1,
+                    backgroundColor: '#1890ff',
+                    padding: 4,
+                    textAlign: 'center',
+                  }}
+                  onPress={() => navigation.navigate('Page2')}
+                  title="Go to Page2"
+                />
+              </View>
             </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -115,9 +126,11 @@ const Stack = createStackNavigator();
 const App: () => React$Node = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home" screenOptions={{title: '家'}}>
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Page1" component={Page1} />
+        <Stack.Screen name="Page2" component={Page2} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -159,6 +172,12 @@ const styles = StyleSheet.create({
     padding: 4,
     paddingRight: 12,
     textAlign: 'right',
+  },
+  btnWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
 });
 
