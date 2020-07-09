@@ -7,7 +7,7 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -25,8 +25,10 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
+import {
+  createStackNavigator,
+  HeaderBackButton,
+} from '@react-navigation/stack';
 /** 首屏 */
 function HomeScreen({ navigation, route }) {
   return (
@@ -75,6 +77,38 @@ function Page1({ navigation, route }) {
 }
 
 function Page2({ navigation, route }) {
+  const [count, setCount] = useState(0);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          title="+"
+          onPress={() => {
+            setCount(c => c + 1);
+          }}
+          style={{ color: '#000' }}
+        />
+      ),
+      // headerTruncatedBackTitle: () => <Text>返回</Text>, // 没用？？
+      // headerLeft: () => (
+      //   <HeaderBackButton
+      //     onPress={() => {
+      //       navigation.goBack();
+      //     }}
+      //     style={{ color: '#fff' }}
+      //   />
+      // ),
+      headerLeft: () => (
+        <Button
+          onPress={() => {
+            navigation.goBack();
+          }}
+          title="< 返回"
+          style={{ color: '#fff' }}
+        />
+      ),
+    });
+  }, [navigation]);
   return (
     <View style={styles.screen}>
       <View style={styles.btnWrapper}>
@@ -90,6 +124,9 @@ function Page2({ navigation, route }) {
         >
           <Text>Go to popTop</Text>
         </TouchableOpacity>
+      </View>
+      <View>
+        <Text>{count}</Text>
       </View>
     </View>
   );
