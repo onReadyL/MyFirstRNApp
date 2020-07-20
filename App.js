@@ -29,6 +29,8 @@ import {
   createStackNavigator,
   HeaderBackButton,
 } from '@react-navigation/stack';
+
+// import CitiesListComponent from './pages/cityList/index';
 /** 首屏 */
 function HomeScreen({ navigation, route }) {
   return (
@@ -49,6 +51,12 @@ function HomeScreen({ navigation, route }) {
           onPress={() => navigation.navigate('Page1')}
         >
           <Text>Go to Page1</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate('Cities')}
+        >
+          <Text>Go to Cities</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -130,6 +138,19 @@ function Page2({ navigation, route }) {
       </View>
     </View>
   );
+}
+
+// function Page3({ navigation, route }) {
+//   return (
+//     <Tab.Navigator>
+//       <Tab.Screen name="Feed" component={Feed} />
+//       <Tab.Screen name="Messages" component={Messages} />
+//     </Tab.Navigator>
+//   );
+// }
+
+function Cities({ navigation, route }) {
+  return <Button title="按钮" />;
 }
 
 const CreateMessage = ({ navigation }) => {
@@ -234,6 +255,7 @@ const App = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Page1" component={Page1} />
         <Stack.Screen name="Page2" component={Page2} />
+        <Stack.Screen name="CityList" component={Cities} />
         <Stack.Screen
           name="Message"
           component={CreateMessage}
